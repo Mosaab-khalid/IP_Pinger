@@ -3,37 +3,32 @@ from ast import Str
 from hashlib import new
 from ipaddress import ip_address
 import os
-import string
 from tkinter import FIRST
 from tokenize import String 
 #========================\
 #=========================\
 #==========================\
-FIRST_IP = "192.168.100.1"   #add your first IP in the range 
-LAST_IP = "192.168.100.20"  #add your last IP in the range
+print('This Program Should Ping a range of IPs to check if they are UP or not')
+FIRST_IP = input('Add Your first IP in the range: ')  #add your first IP in the range   
+LAST_IP = input('Add your last IP: ')  #add your last IP in the range
 #==========================/
 #=========================/
 #========================/
-
 #========================\
 #=========================\
 #==========================\
-ip_list = ["8.8.8.8", "8.8.4.4"] # you can add IPs indivisually in this list, just seperate the IPs with (,) and add them between quotation marks "IP"
+ip_list = ['8.8.8.8'] 
 #==========================/
 #=========================/
 #========================/
+ 
+ask = input('Do you want to add unique IPs out of the range? (y/n): ')
+if ask.casefold() == 'y':
+    n = input("Enter the IPs separated by space: ") 
+      
+    ip_list = n.split()
 
 editableIP = FIRST_IP
-def nextIP(oldIP:Str):
-    o1 = int(SliceIP(oldIP)[0])
-    o2 = int(SliceIP(oldIP)[1])
-    o3 = int(SliceIP(oldIP)[2])
-    o4 = int(SliceIP(oldIP)[3])
-    o4 = o4 + 1 
-    newIP = f"{o1}.{o2}.{o3}.{o4}"
-    newIP = increaseAndRepet(newIP)
-    return newIP
-
 
 # 
 #this should slice the ip into four octet and return it as a list 
@@ -78,30 +73,45 @@ def SliceIP(fullIP:str):
 
 # check if the last octet goes up to 255, it increse the left octet and repeat from zero 
 def increaseAndRepet(ip1:str):
-    o1 = int(SliceIP(ip1)[0])
-    o2 = int(SliceIP(ip1)[1])
-    o3 = int(SliceIP(ip1)[2])
-    o4 = int(SliceIP(ip1)[3])
-    if o4 == 255 and o3 != 255 and o2 != 255:
-        o4 = 0
-        o3 = o3 + 1
-        return f"{o1}.{o2}.{o3}.{o4}"
+    o1 = SliceIP(ip1)[0]
+    o2 = SliceIP(ip1)[1]
+    o3 = SliceIP(ip1)[2]
+    o4 = SliceIP(ip1)[3]
+    o1int = int(o1)
+    o2int = int(o2)
+    o3int = int(o3)
+    o4int = int(o4)
+    if o4int == 255 and o3int != 255 and o2int != 255:
+        o4int = 0
+        o3int = o3int + 1
+        return f"{o1int}.{o2int}.{o3int}.{o4int}"
     else:
-        if o4 == 255 and o3 == 255 and o2 != 255:
-            o4 = 0 
-            o3 = 0 
-            o2 = o2 + 1 
-            return f"{o1}.{o2}.{o3}.{o4}"
+        if o4int == 255 and o3int == 255 and o2int != 255:
+            o4int = 0 
+            o3int = 0 
+            o2int = o2int + 1 
+            return f"{o1int}.{o2int}.{o3int}.{o4int}"
         else:
-            if o4 == 255 and o3 ==255 and o2 == 255:
-                o4 = 0
-                o3 = 0 
-                o2 = 0
-                o1 = o1 + 1
-                return f"{o1}.{o2}.{o3}.{o4}"
+            if o4int == 255 and o3int ==255 and o2int == 255:
+                o4int = 0
+                o3int = 0 
+                o2int = 0
+                o1int = o1int + 1
+                return f"{o1int}.{o2int}.{o3int}.{o4int}"
             else: 
-                return f"{o1}.{o2}.{o3}.{o4}"
+                return f"{o1int}.{o2int}.{o3int}.{o4int}"
              
+def nextIP(oldIP:Str):
+    o1 = int(SliceIP(oldIP)[0])
+    o2 = int(SliceIP(oldIP)[1])
+    o3 = int(SliceIP(oldIP)[2])
+    o4 = int(SliceIP(oldIP)[3])
+    o4 = o4 + 1 
+    newIP = f"{o1}.{o2}.{o3}.{o4}"
+    newIP = increaseAndRepet(newIP)
+    return newIP
+
+
 
 while editableIP != LAST_IP:
     ip_list.append(editableIP)
@@ -116,4 +126,9 @@ for ip in ip_list:
         print(f"{ip} is up !")
 
     else:
-        print (f"----------------{ip} is Down :(((-----------------")
+        print (f"----------------{ip} is Down -----------------")
+input("all the IPs have been checked, press enter to end..")
+
+
+
+
